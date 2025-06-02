@@ -4,7 +4,7 @@
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
-
+  * @attention
   *
   * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
@@ -97,7 +97,65 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  //Sensores
+  uint32_t numTicks = 0;
+  float distancia;
+  const float Vsonido = 0.0343f; //cm/us
+  char uartBuf[50];
 
+    #define Sensor1_PORT GPIO
+    #define Sensor1_PIN  GPIO_PIN_
+
+    #define Sensor2_PORT GPIO
+    #define Sensor2_PIN  GPIO_PIN_
+
+    #define Sensor3_PORT GPIO
+    #define Sensor3_PIN  GPIO_PIN_
+
+    #define Sensor4_PORT GPIO
+    #define Sensor4_PIN  GPIO_PIN_
+
+    #define Sensor5_PORT GPIO
+    #define Sensor5_PIN  GPIO_PIN_
+
+    #define Sensor6_PORT GPIO
+    #define Sensor6_PIN  GPIO_PIN_
+
+    #define Sensor7_PORT GPIO
+    #define Sensor7_PIN  GPIO_PIN_
+
+    #define Sensor8_PORT GPIO
+    #define Sensor8_PIN  GPIO_PIN_
+
+    #define Sensor9_PORT GPIO
+    #define Sensor9_PIN  GPIO_PIN_
+
+    // Sensor ultrasonico
+    #define Sensor10_PORT GPIO
+    #define Sensor10_PIN  GPIO_PIN_
+
+    #define Sensor11_PORT GPIO
+    #define Sensor11_PIN  GPIO_PIN_
+
+    #define Sensor12_PORT GPIO
+    #define Sensor12_PIN  GPIO_PIN_
+
+    #define Sensor13_PORT GPIO
+    #define Sensor13_PIN  GPIO_PIN_
+
+    #define Sensor14_PORT GPIO
+    #define Sensor14_PIN  GPIO_PIN_
+
+
+       //Iniciar PWM
+         HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+         HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+
+         // Puente H
+         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
+         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);\
+         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,7 +163,59 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  //Sensores seguidores
+	  GPIO_PinState sensorState1 = HAL_GPIO_ReadPin (Sensor1_PORT, Sensor1_PIN);
+	  GPIO_PinState sensorState2 = HAL_GPIO_ReadPin (Sensor2_PORT, Sensor2_PIN);
+	  GPIO_PinState sensorState3 = HAL_GPIO_ReadPin (Sensor3_PORT, Sensor3_PIN);
+	  GPIO_PinState sensorState4 = HAL_GPIO_ReadPin (Sensor4_PORT, Sensor4_PIN);
+	  GPIO_PinState sensorState5 = HAL_GPIO_ReadPin (Sensor5_PORT, Sensor5_PIN);
+	  GPIO_PinState sensorState6 = HAL_GPIO_ReadPin (Sensor6_PORT, Sensor6_PIN);
+	  GPIO_PinState sensorState7 = HAL_GPIO_ReadPin (Sensor7_PORT, Sensor7_PIN);
+	  GPIO_PinState sensorState8 = HAL_GPIO_ReadPin (Sensor8_PORT, Sensor8_PIN);
+	  GPIO_PinState sensorState9 = HAL_GPIO_ReadPin (Sensor9_PORT, Sensor9_PIN);
 
+	  // ultrasonico
+	  GPIO_PinState sensorState10 = HAL_GPIO_ReadPin (Sensor10_PORT, Sensor10_PIN);
+	  GPIO_PinState sensorState11 = HAL_GPIO_ReadPin (Sensor11_PORT, Sensor11_PIN);
+	  GPIO_PinState sensorState12 = HAL_GPIO_ReadPin (Sensor12_PORT, Sensor12_PIN);
+	  GPIO_PinState sensorState13 = HAL_GPIO_ReadPin (Sensor13_PORT, Sensor13_PIN);
+	  GPIO_PinState sensorState14 = HAL_GPIO_ReadPin (Sensor14_PORT, Sensor14_PIN);
+	  
+	  //Trig en bajo
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  delay_us(3);
+
+	  //Pulso de 10 us
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+	  delay_us(10);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+
+	  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
+	  numTicks = 0;
+
+	  // Esperamos el ECHO
+	  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
+	  {
+		numTicks++;
+		delay_us(2); // Aproximadamente 2.8 us
+	  }
+
+	  // Calcular distancias
+	  distancia = (numTicks * 2.8f) *Vsonido/2;
+
+	  if (sensorState10 == GPIO_PIN_RESET)
+	  {
+		  if ()
+		  {
+			  
+		  }
+	  }
+
+	  else
+	  {
+		  spintf(uartBuf, "Programa bien Bitch");
+		  HAL_UART_Transmit(&huart2, (uint8_t*)uartBuf, strlen(uartBuf), 100);
+	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
