@@ -180,15 +180,15 @@ int main(void)
 	  GPIO_PinState sensorState12 = HAL_GPIO_ReadPin (Sensor12_PORT, Sensor12_PIN);
 	  GPIO_PinState sensorState13 = HAL_GPIO_ReadPin (Sensor13_PORT, Sensor13_PIN);
 	  GPIO_PinState sensorState14 = HAL_GPIO_ReadPin (Sensor14_PORT, Sensor14_PIN);
-	  
+
 	  //Trig en bajo
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  HAL_GPIO_WritePin(sensorState10, GPIO_PIN_RESET); // PA0 Trig Bajo
 	  delay_us(3);
 
 	  //Pulso de 10 us
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(sensorState10, GPIO_PIN_SET);
 	  delay_us(10);
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(sensorState10, GPIO_PIN_RESET);
 
 	  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
 	  numTicks = 0;
@@ -203,11 +203,32 @@ int main(void)
 	  // Calcular distancias
 	  distancia = (numTicks * 2.8f) *Vsonido/2;
 
-	  if (sensorState10 == GPIO_PIN_RESET)
+	  if (distancia > 10.0f)
 	  {
 		  if ()
 		  {
-			  
+
+		  }
+
+		  else if ()
+		  {
+
+		  }
+
+		  else if ()
+		  {
+
+		  }
+
+		  else if ()
+		  {
+
+		  }
+
+		  else
+		  {
+			  spintf(uartBuf, "Programa bien Bitch");
+			  HAL_UART_Transmit(&huart2, (uint8_t*)uartBuf, strlen(uartBuf), 100);
 		  }
 	  }
 
