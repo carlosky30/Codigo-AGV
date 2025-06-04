@@ -150,17 +150,6 @@ int main(void)
   #define Sensor15_PORT GPIO
   #define Sensor15_PIN  GPIO_PIN_
 
-  #define Sensor16_PORT GPIO
-  #define Sensor16_PIN  GPIO_PIN_
-
-  #define Sensor17_PORT GPIO
-  #define Sensor17_PIN  GPIO_PIN_
-
-  #define Sensor18_PORT GPIO
-  #define Sensor18_PIN  GPIO_PIN_
-
-  #define Sensor19_PORT GPIO
-  #define Sensor19_PIN  GPIO_PIN_
 
   // Switch
   #define Sensor20_PORT GPIO
@@ -195,14 +184,10 @@ int main(void)
 	  // ultrasonico
 	  GPIO_PinState sensorStateTrig1 = HAL_GPIO_ReadPin (Sensor10_PORT, Sensor10_PIN);
 	  GPIO_PinState sensorStateEcho1 = HAL_GPIO_ReadPin (Sensor11_PORT, Sensor11_PIN);
-	  GPIO_PinState sensorStateTrig2 = HAL_GPIO_ReadPin (Sensor12_PORT, Sensor12_PIN);
-	  GPIO_PinState sensorStateEcho2 = HAL_GPIO_ReadPin (Sensor13_PORT, Sensor13_PIN);
-	  GPIO_PinState sensorStateTrig3 = HAL_GPIO_ReadPin (Sensor14_PORT, Sensor14_PIN);
-	  GPIO_PinState sensorStateEcho3 = HAL_GPIO_ReadPin (Sensor15_PORT, Sensor15_PIN);
-	  GPIO_PinState sensorStateTrig4 = HAL_GPIO_ReadPin (Sensor16_PORT, Sensor16_PIN);
-	  GPIO_PinState sensorStateEcho4 = HAL_GPIO_ReadPin (Sensor17_PORT, Sensor17_PIN);
-	  GPIO_PinState sensorStateTrig5 = HAL_GPIO_ReadPin (Sensor18_PORT, Sensor18_PIN);
-	  GPIO_PinState sensorStateEcho5 = HAL_GPIO_ReadPin (Sensor19_PORT, Sensor19_PIN);
+	  GPIO_PinState sensorStateEcho2 = HAL_GPIO_ReadPin (Sensor12_PORT, Sensor13_PIN);
+	  GPIO_PinState sensorStateEcho3 = HAL_GPIO_ReadPin (Sensor13_PORT, Sensor15_PIN);
+	  GPIO_PinState sensorStateEcho4 = HAL_GPIO_ReadPin (Sensor14_PORT, Sensor17_PIN);
+	  GPIO_PinState sensorStateEcho5 = HAL_GPIO_ReadPin (Sensor15_PORT, Sensor19_PIN);
 
 	  // Switch
 	  GPIO_PinState sensorStateSw = HAL_GPIO_ReadPin (Sensor20_PORT, Sensor20_PIN);
@@ -232,13 +217,13 @@ int main(void)
 
 	  //Distancia 2
 	  //Trig en bajo
-	  HAL_GPIO_Write(sensorStateTrig2, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET); // PA0 Trig Bajo
 	  delay_us(3);
 
 	  //Pulso de 10 us
-	  HAL_GPIO_Write(sensorStateTrig2, GPIO_PIN_SET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_SET);
 	  delay_us(10);
-	  HAL_GPIO_Write(sensorStateTrig2, GPIO_PIN_RESET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET);
 
 	  while (HAL_GPIO_Read(sensorStateEcho2) == GPIO_PIN_RESET);  // Esperar ECHO alto
 	  numTicks1 = 0;
@@ -255,13 +240,13 @@ int main(void)
 
 	  //Distacia 3
 	  //Trig en bajo
-	  HAL_GPIO_Write(sensorStateTrig3, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET); // PA0 Trig Bajo
 	  delay_us(3);
 
 	  //Pulso de 10 us
-	  HAL_GPIO_Write(sensorStateTrig3, GPIO_PIN_SET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_SET);
 	  delay_us(10);
-	  HAL_GPIO_Write(sensorStateTrig3, GPIO_PIN_RESET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET);
 
 	  while (HAL_GPIO_Read(sensorStateEcho3) == GPIO_PIN_RESET);  // Esperar ECHO alto
 	  numTicks3 = 0;
@@ -278,13 +263,13 @@ int main(void)
 
 	  // Distancia 4
 	  //Trig en bajo
-	  HAL_GPIO_Write(sensorStateTrig4, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET); // PA0 Trig Bajo
 	  delay_us(3);
 
 	  //Pulso de 10 us
-	  HAL_GPIO_Write(sensorStateTrig4, GPIO_PIN_SET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_SET);
 	  delay_us(10);
-	  HAL_GPIO_Write(sensorStateTrig4, GPIO_PIN_RESET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET);
 
 	  while (HAL_GPIO_Read(sensorStateEcho4) == GPIO_PIN_RESET);  // Esperar ECHO alto
 	  numTicks4 = 0;
@@ -301,13 +286,13 @@ int main(void)
 
 	  //Distancia 5
 	  //Trig en bajo
-	  HAL_GPIO_Write(sensorStateTrig5, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET); // PA0 Trig Bajo
 	  delay_us(3);
 
 	  //Pulso de 10 us
-	  HAL_GPIO_Write(sensorStateTrig5, GPIO_PIN_SET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_SET);
 	  delay_us(10);
-	  HAL_GPIO_Write(sensorStateTrig5, GPIO_PIN_RESET);
+	  HAL_GPIO_Write(sensorStateTrig1, GPIO_PIN_RESET);
 
 	  while (HAL_GPIO_Read(sensorStateEcho5) == GPIO_PIN_RESET);  // Esperar ECHO alto
 	  numTicks5 = 0;
@@ -621,6 +606,14 @@ void delay_us(uint32_t us)
 	while ((TIM4-> SR&0x0001) !=1); // Esperams a cumplir un ciclo entero
 	TIM4 -> SR &= ~(0x0001); // Señal para contar microsegundos
 }
+
+void triggerSensor() 
+{
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET); //Prende el Pin y manda señal
+    HAL_Delay(10);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET); //Apaga el Pin
+}
+
 /* USER CODE END 4 */
 
 /**
