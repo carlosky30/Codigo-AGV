@@ -98,53 +98,76 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   //Sensores
-  uint32_t numTicks = 0;
-  float distancia;
+  uint32_t numTicks1 = 0;
+  uint32_t numTicks2 = 0;
+  uint32_t numTicks3 = 0;
+  uint32_t numTicks4 = 0;
+  uint32_t numTicks5 = 0;
+  float distancia1;
+  float distancia2;
+  float distancia3;
+  float distancia4;
+  float distancia5;
   const float Vsonido = 0.0343f; //cm/us
   char uartBuf[50];
 
-    #define Sensor1_PORT GPIO
-    #define Sensor1_PIN  GPIO_PIN_
+  #define Sensor1_PORT GPIO
+  #define Sensor1_PIN  GPIO_PIN_
 
-    #define Sensor2_PORT GPIO
-    #define Sensor2_PIN  GPIO_PIN_
+  #define Sensor2_PORT GPIO
+  #define Sensor2_PIN  GPIO_PIN_
 
-    #define Sensor3_PORT GPIO
-    #define Sensor3_PIN  GPIO_PIN_
+  #define Sensor3_PORT GPIO
+  #define Sensor3_PIN  GPIO_PIN_
 
-    #define Sensor4_PORT GPIO
-    #define Sensor4_PIN  GPIO_PIN_
+  #define Sensor4_PORT GPIO
+  #define Sensor4_PIN  GPIO_PIN_
 
-    #define Sensor5_PORT GPIO
-    #define Sensor5_PIN  GPIO_PIN_
+  #define Sensor5_PORT GPIO
+  #define Sensor5_PIN  GPIO_PIN_
 
-    #define Sensor6_PORT GPIO
-    #define Sensor6_PIN  GPIO_PIN_
+  #define Sensor6_PORT GPIO
+  #define Sensor6_PIN  GPIO_PIN_
 
-    #define Sensor7_PORT GPIO
-    #define Sensor7_PIN  GPIO_PIN_
+  #define Sensor7_PORT GPIO
+  #define Sensor7_PIN  GPIO_PIN_
 
-    #define Sensor8_PORT GPIO
-    #define Sensor8_PIN  GPIO_PIN_
+  #define Sensor8_PORT GPIO
+  #define Sensor8_PIN  GPIO_PIN_
 
-    #define Sensor9_PORT GPIO
-    #define Sensor9_PIN  GPIO_PIN_
+  #define Sensor9_PORT GPIO
+  #define Sensor9_PIN  GPIO_PIN_
 
     // Sensor ultrasonico
-    #define Sensor10_PORT GPIO
-    #define Sensor10_PIN  GPIO_PIN_
+  #define Sensor10_PORT GPIO
+  #define Sensor10_PIN  GPIO_PIN_
 
-    #define Sensor11_PORT GPIO
-    #define Sensor11_PIN  GPIO_PIN_
+  #define Sensor11_PORT GPIO
+  #define Sensor11_PIN  GPIO_PIN_
 
-    #define Sensor12_PORT GPIO
-    #define Sensor12_PIN  GPIO_PIN_
+  #define Sensor12_PORT GPIO
+  #define Sensor12_PIN  GPIO_PIN_
 
-    #define Sensor13_PORT GPIO
-    #define Sensor13_PIN  GPIO_PIN_
+  #define Sensor13_PORT GPIO
+  #define Sensor13_PIN  GPIO_PIN_
 
-    #define Sensor14_PORT GPIO
-    #define Sensor14_PIN  GPIO_PIN_
+  #define Sensor14_PORT GPIO
+  #define Sensor14_PIN  GPIO_PIN_
+
+  #define Sensor15_PORT GPIO
+  #define Sensor15_PIN  GPIO_PIN_
+
+  #define Sensor16_PORT GPIO
+  #define Sensor16_PIN  GPIO_PIN_
+
+  #define Sensor17_PORT GPIO
+  #define Sensor17_PIN  GPIO_PIN_
+
+  #define Sensor18_PORT GPIO
+  #define Sensor18_PIN  GPIO_PIN_
+
+  #define Sensor19_PORT GPIO
+  #define Sensor19_PIN  GPIO_PIN_
 
 
        //Iniciar PWM
@@ -175,35 +198,133 @@ int main(void)
 	  GPIO_PinState sensorState9 = HAL_GPIO_ReadPin (Sensor9_PORT, Sensor9_PIN);
 
 	  // ultrasonico
-	  GPIO_PinState sensorState10 = HAL_GPIO_ReadPin (Sensor10_PORT, Sensor10_PIN);
-	  GPIO_PinState sensorState11 = HAL_GPIO_ReadPin (Sensor11_PORT, Sensor11_PIN);
-	  GPIO_PinState sensorState12 = HAL_GPIO_ReadPin (Sensor12_PORT, Sensor12_PIN);
-	  GPIO_PinState sensorState13 = HAL_GPIO_ReadPin (Sensor13_PORT, Sensor13_PIN);
-	  GPIO_PinState sensorState14 = HAL_GPIO_ReadPin (Sensor14_PORT, Sensor14_PIN);
+	  GPIO_PinState sensorStateTrig1 = HAL_GPIO_ReadPin (Sensor10_PORT, Sensor10_PIN);
+	  GPIO_PinState sensorStateEcho1 = HAL_GPIO_ReadPin (Sensor11_PORT, Sensor11_PIN);
+	  GPIO_PinState sensorStateTrig2 = HAL_GPIO_ReadPin (Sensor12_PORT, Sensor12_PIN);
+	  GPIO_PinState sensorStateEcho2 = HAL_GPIO_ReadPin (Sensor13_PORT, Sensor13_PIN);
+	  GPIO_PinState sensorStateTrig3 = HAL_GPIO_ReadPin (Sensor14_PORT, Sensor14_PIN);
+	  GPIO_PinState sensorStateEcho3 = HAL_GPIO_ReadPin (Sensor15_PORT, Sensor15_PIN);
+	  GPIO_PinState sensorStateTrig4 = HAL_GPIO_ReadPin (Sensor16_PORT, Sensor16_PIN);
+	  GPIO_PinState sensorStateEcho4 = HAL_GPIO_ReadPin (Sensor17_PORT, Sensor17_PIN);
+	  GPIO_PinState sensorStateTrig5 = HAL_GPIO_ReadPin (Sensor18_PORT, Sensor18_PIN);
+	  GPIO_PinState sensorStateEcho5 = HAL_GPIO_ReadPin (Sensor19_PORT, Sensor19_PIN);
 
+	  // Distancia 1
 	  //Trig en bajo
-	  HAL_GPIO_WritePin(sensorState10, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  HAL_GPIO_Write(sensorStateTrig1 == GPIO_PIN_RESET); // PA0 Trig Bajo
 	  delay_us(3);
 
 	  //Pulso de 10 us
-	  HAL_GPIO_WritePin(sensorState10, GPIO_PIN_SET);
+	  HAL_GPIO_Write(sensorStateTrig1 == GPIO_PIN_SET);
 	  delay_us(10);
-	  HAL_GPIO_WritePin(sensorState10, GPIO_PIN_RESET);
+	  HAL_GPIO_Write(sensorStateTrig1 == GPIO_PIN_RESET);
 
-	  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
-	  numTicks = 0;
+	  while (HAL_GPIO_Read(sensorStateEcho1) == GPIO_PIN_RESET);  // Esperar ECHO alto
+	  numTicks1 = 0;
 
 	  // Esperamos el ECHO
-	  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
+	  while (HAL_GPIO_Read(sensorStateEcho1) == GPIO_PIN_SET)
 	  {
-		numTicks++;
+		numTicks1++;
 		delay_us(2); // Aproximadamente 2.8 us
 	  }
 
 	  // Calcular distancias
-	  distancia = (numTicks * 2.8f) *Vsonido/2;
+	  distancia1 = (numTicks1 * 2.8f) *Vsonido/2;
 
-	  if (distancia > 10.0f)
+	  //Distancia 2
+	  //Trig en bajo
+	  HAL_GPIO_Write(sensorStateTrig2, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  delay_us(3);
+
+	  //Pulso de 10 us
+	  HAL_GPIO_Write(sensorStateTrig2, GPIO_PIN_SET);
+	  delay_us(10);
+	  HAL_GPIO_Write(sensorStateTrig2, GPIO_PIN_RESET);
+
+	  while (HAL_GPIO_Read(sensorStateEcho2) == GPIO_PIN_RESET);  // Esperar ECHO alto
+	  numTicks1 = 0;
+
+	  // Esperamos el ECHO
+	  while (HAL_GPIO_Read(sensorStateEcho2) == GPIO_PIN_SET)
+	  {
+		numTicks2++;
+		delay_us(2); // Aproximadamente 2.8 us
+	  }
+
+	  // Calcular distancias
+	  distancia2 = (numTicks2 * 2.8f) *Vsonido/2;
+
+	  //Distacia 3
+	  //Trig en bajo
+	  HAL_GPIO_Write(sensorStateTrig3, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  delay_us(3);
+
+	  //Pulso de 10 us
+	  HAL_GPIO_Write(sensorStateTrig3, GPIO_PIN_SET);
+	  delay_us(10);
+	  HAL_GPIO_Write(sensorStateTrig3, GPIO_PIN_RESET);
+
+	  while (HAL_GPIO_Read(sensorStateEcho3) == GPIO_PIN_RESET);  // Esperar ECHO alto
+	  numTicks3 = 0;
+
+	  // Esperamos el ECHO
+	  while (HAL_GPIO_Read(sensorStateEcho3) == GPIO_PIN_SET)
+	  {
+		numTicks3++;
+		delay_us(2); // Aproximadamente 2.8 us
+	  }
+
+	  // Calcular distancias
+	  distancia3 = (numTicks3 * 2.8f) *Vsonido/2;
+
+	  // Distancia 4
+	  //Trig en bajo
+	  HAL_GPIO_Write(sensorStateTrig4, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  delay_us(3);
+
+	  //Pulso de 10 us
+	  HAL_GPIO_Write(sensorStateTrig4, GPIO_PIN_SET);
+	  delay_us(10);
+	  HAL_GPIO_Write(sensorStateTrig4, GPIO_PIN_RESET);
+
+	  while (HAL_GPIO_Read(sensorStateEcho4) == GPIO_PIN_RESET);  // Esperar ECHO alto
+	  numTicks4 = 0;
+
+	  // Esperamos el ECHO
+	  while (HAL_GPIO_Read(sensorStateEcho4) == GPIO_PIN_SET)
+	  {
+		numTicks4++;
+		delay_us(2); // Aproximadamente 2.8 us
+	  }
+
+	  // Calcular distancias
+	  distancia4 = (numTicks4 * 2.8f) *Vsonido/2;
+
+	  //Distancia 5
+	  //Trig en bajo
+	  HAL_GPIO_Write(sensorStateTrig5, GPIO_PIN_RESET); // PA0 Trig Bajo
+	  delay_us(3);
+
+	  //Pulso de 10 us
+	  HAL_GPIO_Write(sensorStateTrig5, GPIO_PIN_SET);
+	  delay_us(10);
+	  HAL_GPIO_Write(sensorStateTrig5, GPIO_PIN_RESET);
+
+	  while (HAL_GPIO_Read(sensorStateEcho5) == GPIO_PIN_RESET);  // Esperar ECHO alto
+	  numTicks5 = 0;
+
+	  // Esperamos el ECHO
+	  while (HAL_GPIO_Read(sensorStateEcho5) == GPIO_PIN_SET)
+	  {
+		numTicks5++;
+		delay_us(2); // Aproximadamente 2.8 us
+	  }
+
+	  // Calcular distancias
+	  distancia5 = (numTicks5 * 2.8f) *Vsonido/2;
+
+	  if (distancia1 > 10.0f)
 	  {
 		  if ()
 		  {
@@ -476,7 +597,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void delay_us(uint32_t us)
+{
+	if (us < 2) us = 2;
+	TIM4 -> ARR = us -1; // Pone el valor de ARR
+	TIM4 -> EGR = 1; // Reiniciamos el timer
+	TIM4 -> SR &= ~1; // Reiniciar la badera
+	TIM4 -> CR1 |=1; // Iniciamos el contador
+	while ((TIM4-> SR&0x0001) !=1); // Esperams a cumplir un ciclo entero
+	TIM4 -> SR &= ~(0x0001); // Señal para contar microsegundos
+}
 /* USER CODE END 4 */
 
 /**
