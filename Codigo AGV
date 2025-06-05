@@ -200,19 +200,19 @@ int main(void)
 
 		  //Distancia 1
 		  //Trig en bajo
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
 		  delay_us(3);
 
 		  //Pulso de 10 us
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
 		  delay_us(10);
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
 
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
+		  while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == GPIO_PIN_RESET);  // Esperar ECHO alto
 		  numTicks1 = 0;
 
 		  // Esperamos el ECHO
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
+		  while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == GPIO_PIN_SET)
 		  {
 			  numTicks1++;
 			  delay_us(2); // Aproximadamente 2.8 us
@@ -221,21 +221,26 @@ int main(void)
 		  // Calcular distancias
 		  distancia1 = (numTicks1 * 2.8f) *Vsonido/2;
 
+		  sprintf(uartBuf, "Distancia (cm) = %.1f\r\n", distancia1);
+		  HAL_UART_Transmit(&huart2, (uint8_t *)uartBuf, strlen(uartBuf), 100);
+
+		  HAL_Delay(1000);
+
 		  //Distancia 2
 		  //Trig en bajo
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET); // PA0 Trig Bajo
 		  delay_us(3);
 
 		  //Pulso de 10 us
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
 		  delay_us(10);
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
 
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
+		  while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_RESET);  // Esperar ECHO alto
 		  numTicks2 = 0;
 
 		  // Esperamos el ECHO
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
+		  while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_SET)
 		  {
 			  numTicks2++;
 			  delay_us(2); // Aproximadamente 2.8 us
@@ -244,21 +249,26 @@ int main(void)
 		  // Calcular distancias
 		  distancia2 = (numTicks2 * 2.8f) *Vsonido/2;
 
+		  sprintf(uartBuf, "Distancia (cm) = %.1f\r\n", distancia2);
+		  HAL_UART_Transmit(&huart2, (uint8_t *)uartBuf, strlen(uartBuf), 100);
+
+		  HAL_Delay(1000);
+
 		  //Distancia 3
 		  //Trig en bajo
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET); // PA0 Trig Bajo
 		  delay_us(3);
 
 		  //Pulso de 10 us
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
 		  delay_us(10);
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
 
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
+		  while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == GPIO_PIN_RESET);  // Esperar ECHO alto
 		  numTicks3 = 0;
 
 		  // Esperamos el ECHO
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
+		  while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == GPIO_PIN_SET)
 		  {
 			  numTicks3++;
 			  delay_us(2); // Aproximadamente 2.8 us
@@ -267,51 +277,10 @@ int main(void)
 		  // Calcular distancias
 		  distancia3 = (numTicks3 * 2.8f) *Vsonido/2;
 
-		  //Distancia 4
-		  //Trig en bajo
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
-		  delay_us(3);
+		  sprintf(uartBuf, "Distancia (cm) = %.1f\r\n", distancia3);
+		  HAL_UART_Transmit(&huart2, (uint8_t *)uartBuf, strlen(uartBuf), 100);
 
-		  //Pulso de 10 us
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
-		  delay_us(10);
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
-
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
-		  numTicks4 = 0;
-
-		  // Esperamos el ECHO
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
-		  {
-			  numTicks4++;
-			  delay_us(2); // Aproximadamente 2.8 us
-		  }
-
-		  // Calcular distancias
-		  distancia4 = (numTicks4 * 2.8f) *Vsonido/2;
-
-		  //Distancia 5
-		  //Trig en bajo
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // PA0 Trig Bajo
-		  delay_us(3);
-
-		  //Pulso de 10 us
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
-		  delay_us(10);
-		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
-
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);  // Esperar ECHO alto
-		  numTicks5 = 0;
-
-		  // Esperamos el ECHO
-		  while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
-		  {
-			  numTicks5++;
-			  delay_us(2); // Aproximadamente 2.8 us
-		  }
-
-		  // Calcular distancias
-		  distancia5 = (numTicks5 * 2.8f) *Vsonido/2;
+		  HAL_Delay(1000);
 
 		  if (sensorStateSw == GPIO_PIN_SET)
 		  {
@@ -626,13 +595,6 @@ void delay_us(uint32_t us)
 	TIM4 -> CR1 |=1; // Iniciamos el contador
 	while ((TIM4-> SR&0x0001) !=1); // Esperams a cumplir un ciclo entero
 	TIM4 -> SR &= ~(0x0001); // Señal para contar microsegundos
-}
-
-void triggerSensor()
-{
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET); //Prende el Pin y manda señal
-    HAL_Delay(10);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET); //Apaga el Pin
 }
 
 /* USER CODE END 4 */
